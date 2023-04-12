@@ -1,0 +1,77 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+.login{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form span{
+    font-size: 16px;
+    font-weight: 4rem;
+    text-shadow: 1.166 1.888 1 rgb(27, 33, 33);
+    font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+}
+form{
+    background-color: white;
+    width: 20em;
+    height: 24em;
+    position: relative;
+    border-radius: 1em;
+    box-shadow: 0 0.188em 1.550em rgb(150, 156, 156);
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.form h1{
+    font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+}
+.btn{
+    width: 40%;
+    height: 3em;
+    background-color: rgb(229, 226, 226);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.23em;
+    cursor: pointer;
+    border: none;
+    font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+}
+.btn:hover{
+    transform: scale(1.2);
+}
+.alt-login {
+    width: 45%;
+    height: 12%;
+    border-radius: 0.25em;
+    background-position: center;
+    box-shadow:0 0.18em 1.50em rgb(150, 121, 156);
+    background-repeat: no-repeat;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 7px;
+    padding-right: 12px;
+}
+.form input{
+    border: none;
+    background-color: rgb(229, 226, 226);
+    height: 2em;
+    border: rgb(229, 226, 226);
+    width: 80%;
+    border-radius: 0.25em;
+    text-align: center;
+    padding: 2em;
+    font-family: 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+    font-size: 14px;
+}
+.form input:focus{
+    outline-color: rgb(27, 33, 33);
+
+}
