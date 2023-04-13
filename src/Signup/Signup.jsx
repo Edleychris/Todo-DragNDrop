@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import "./Signup.css";
+import { Link } from 'react-router-dom';
 
 function Signup() {
   const [email, setEmail] =useState("")
@@ -18,8 +19,9 @@ function Signup() {
         <input type='email' value={email} onChange={(e) =>setEmail(e.target.value)} placeholder='email' required/>
         <input type='password' value={password} onChange={(e) =>setPassword(e.target.value)} placeholder='password' required/>
         <input type='password' placeholder='comfirm password' required/>
-        <button  className="btn"><a href='http://localhost:3000'>SignUp</a></button>
-        <span>Already have an account? <a href='http://localhost:3000'>Login</a></span>
+        <button  className="btn"><Link to='/'>SignUp</Link>
+</button>
+        <span>Already have an account? <Link to='/'>Login</Link></span>
     </form>
 </div>
   )
