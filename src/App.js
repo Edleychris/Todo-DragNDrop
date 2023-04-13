@@ -8,6 +8,7 @@ import Signup from './Signup/Signup';
 import { DndProvider, useDragDropManager } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useState } from 'react';
+import { TouchBackend } from 'react-dnd-touch-backend';
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -23,7 +24,7 @@ function App() {
 
   return (
     <div>
-      <DndProvider backend={HTML5Backend} manager={dragDropManager}>
+      <DndProvider backend={TouchBackend} manager={dragDropManager}>
         <Router>
           <div className="App">
             <Routes>
