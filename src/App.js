@@ -5,14 +5,29 @@ Route} from 'react-router-dom';
 import Dashbord from './Body/Dashbord';
 import Login from './Login/Login';
 import Signup from './Signup/Signup';
-import { DndProvider, useDragDropManager } from 'react-dnd';
+import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useState } from 'react';
 import { TouchBackend } from 'react-dnd-touch-backend';
+import {MultiBackend, TouchTransition, MouseTransition } from 'react-dnd-multi-backend';
+import { useState } from 'react';
+
+const HTML5toTouch = {
+  backends: [
+    {
+      backend: HTML5Backend,
+      transition: MouseTransition,
+    },
+    {
+      backend: TouchBackend,
+      options: { enableMouseEvents: true },
+      preview: true,
+      transition: TouchTransition,
+    },
+  ],
+};
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const dragDropManager  = useDragDropManager();
 
   const handleSignIn = () => {
     setLoggedIn(!isLoggedIn);
@@ -24,7 +39,7 @@ function App() {
 
   return (
     <div>
-      <DndProvider backend={TouchBackend} manager={dragDropManager}>
+      <DndProvider backend={MultiBackend} options={HTML5toTouch}>
         <Router>
           <div className="App">
             <Routes>
