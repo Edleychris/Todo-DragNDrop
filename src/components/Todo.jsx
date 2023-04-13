@@ -1,25 +1,48 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useDrag } from "react-dnd";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { MdDone } from "react-icons/md";
 
-const Todo = ({ todo, handleEdit, handleDelete, handleDone,
-  isEdit, setIsEdit, editTodo, setEditTodo}) => {
+const Todo = ({
+  todo,
+  handleEdit,
+  handleDelete,
+  handleDone,
+  isEdit,
+  setIsEdit,
+  editTodo,
+  setEditTodo,
+}) => {
+  const [{ isDragging }, drag] = useDrag({
+    type: "todo",
+    item: { todo, id: todo.id },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  });
 
-    const [{isDragging}, drag] = useDrag({
-      type: "todo",
-      item: { todo, id: todo.id},
-      collect: (monitor) => ({
-        isDragging: !!monitor.isDragging()
-      }),
-    });
+  const ref = useRef(null);
 
-  
+  const onTouchStart = (e) => {
+    ref.current.style.border = "1px solid pink";
+  };
+
+  const onTouchEnd = (e) => {
+    ref.current.style.border = "none";
+  };
+
   return (
-    <div className={`todos__single ${todo?.isDone ? "done" : ""}`}
-    draggable
-    ref={drag}
-    style={{ border: isDragging ? "1px solid pink" : "none"}}>
+    <div
+      className={`todos__single ${todo?.isDone ? "done" : ""}`}
+      draggable
+      ref={(instance) => {
+        drag(instance);
+        ref.current = instance;
+      }}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      style={{ border: isDragging ? "1px solid pink" : "none" }}
+    >
       {isEdit ? (
         <form onSubmit={(e) => handleEdit(e, todo.id)}>
           <input
@@ -45,15 +68,20 @@ const Todo = ({ todo, handleEdit, handleDelete, handleDone,
                     setIsEdit(!isEdit);
                   }
                 }}
+                onTouchEnd={() => {
+                  if (!isEdit) {
+                    setIsEdit(!isEdit);
+                  }
+                }}
               >
-                <AiFillEdit style={{color: "blue"}} />
+                <AiFillEdit style={{ color: "blue" }} />
               </span>
             )}
             <span className="icon" onClick={() => handleDelete(todo.id)}>
-              <AiFillDelete style={{color: "red"}}/>
+              <AiFillDelete style={{ color: "red" }} />
             </span>
             <span className="icon" onClick={() => handleDone(todo.id)}>
-              <MdDone style={{color: "green", }}/>
+              <MdDone style={{ color: "green" }} />
             </span>
           </div>
         </>
