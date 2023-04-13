@@ -137,3 +137,21 @@
       margin-bottom: 10px;
     }
   }
+  .todo_list2{
+    background-color: rgb(50, 195, 205);
+    margin-top: 100px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 20px;
+    padding: 40px;
+  }
+  .completed-task{
+    overflow-y: scroll;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border: 1px dashed black;
+    font-size: 18px;
+    background-color: lightgray;
+  }

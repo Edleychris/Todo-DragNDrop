@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputField from "../components/InputField";
-// import TodoList from "../components/TodoList";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import TodoList from "../components/TodoList";
+import CompletedTasks from "../components/CompletedTasks"
+import "./Dashboard.css"
 
 const Dashbord = () => {
   const [todo, setTodo] = useState("");
   const [todos, setTodos] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
+  const [editTodo, setEditTodo] = useState("");
   const [completedTodos, setCompletedTodos] = useState([]);
 
   const handleAdd = (e) => {
@@ -17,102 +20,56 @@ const Dashbord = () => {
     }
   };
 
-  
-  const onDragEnd = (result) => {
-    const { destination, source } = result;
-
-    console.log(result);
-
-    if (!destination) {
-      return;
-    }
-
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
-
-    let add;
-    let active = todos;
-    let complete = completedTodos;
-    // Source Logic
-    if (source.droppableId === "TodosList") {
-      add = active[source.index];
-      active.splice(source.index, 1);
-    } else {
-      add = complete[source.index];
-      complete.splice(source.index, 1);
-    }
-
-    // Destination Logic
-    if (destination.droppableId === "TodosList") {
-      active.splice(destination.index, 0, add);
-    } else {
-      complete.splice(destination.index, 0, add);
-    }
-
-    setCompletedTodos(complete);
-    setTodos(active);
+  const handleEdit =(e, id) => {
+    e.preventDefault();
+    setTodos(
+      todos.map((todo) => (todo.id === id ? {...todo, todo: editTodo} : todo))
+    );
+    setIsEdit(false);
+    setEditTodo("");
   };
 
+  const handleDelete = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
+   const handleDone =(id) => {
+    setTodos(
+      todos.map((todo) => 
+      todo.id === id ? {...todo, isDone:  !todo.isDone} : todo
+    )
+    );
+   };
+
+   useEffect(() => {
+    const newCompletedTodos = todos.filter((todo) => todo.isDone === true)
+    setCompletedTodos(newCompletedTodos)
+   }, [todos])
+   console.log(completedTodos)
+
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
       <div className="dashbord">
         <span className="heading">Drag And Drop</span>
         <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd} />
-        <div className="container">
+        <div className="todo-list2">
 
-          <Droppable droppableId="TodosList">
-            {(provided, snapshot) => (
-              <div
-                className={`todos ${snapshot.isDraggingOver ? "dragactive" : ""}`}
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
+              <div className="">
+
                 <span className="todos__heading">Tasks</span>
-                {todos?.map((todo, index) => (
-                  <div
-                    className="todos__item"
-                    key={todo.id}
-                    draggable
-                    onDragStart={() => console.log("dragging")}
-                  >
-                    {todo.todo}
+                <TodoList
+                todos={todos}
+                handleDelete={handleDelete}
+                handleDone={handleDone}
+                isEdit={isEdit}
+                setIsEdit={setIsEdit}
+                editTodo={editTodo}
+                setEditTodo={setEditTodo}
+                handleEdit={handleEdit}
+                />
                   </div>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-          <Droppable droppableId="TodosRemove">
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className={`todos  ${
-                  snapshot.isDraggingOver ? "dragcomplete" : "remove"
-                }`}
-              >
-                <span className="todos__heading">Completed Tasks</span>
-                {completedTodos?.map((todo, index) => (
-                  <div
-                    className="todos__item"
-                    key={todo.id}
-                    draggable
-                    onDragStart={() => console.log("dragging")}
-                  >
-                    {todo.todo}
-                  </div>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </div>
-      </div>
-    </DragDropContext>
+                <CompletedTasks todos={completedTodos} />
+               </div>
+               </div>
   );
 };
 
